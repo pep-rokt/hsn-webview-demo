@@ -11,10 +11,10 @@ Demo apps that load a Rokt placement inside a native WebView via Google Tag Mana
    ```
 2. Follow the setup guide for your platform:
 
-| Platform | Directory | README |
-|----------|-----------|--------|
-| iOS | [`ios/`](ios/) | [iOS README](ios/README.md) |
-| Android | `android/` | Coming soon |
+| Platform | Directory      | README                      |
+| -------- | -------------- | --------------------------- |
+| iOS      | [`ios/`](ios/) | [iOS README](ios/README.md) |
+| Android  | `android/`     | Coming soon                 |
 
 ## GTM Tag
 
@@ -47,13 +47,3 @@ hsn-webview-demo/
 ├── ios/                           # iOS demo (see ios/README.md)
 └── android/                       # Android demo (coming soon)
 ```
-
-## Configuration
-
-| Setting | Value | File |
-|---------|-------|------|
-| GTM Container | `GTM-MPN4J78` | Platform-specific confirmation page |
-| Rokt API Key | *(in GTM tag)* | `gtm-custom-code.html` |
-| Development Mode | `true` | `gtm-custom-code.html` |
-
-Set `isDevelopmentMode` to `false` in the GTM tag for production.
