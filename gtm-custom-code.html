@@ -3,26 +3,26 @@
   Rokt Web SDK Integration — GTM Custom HTML Tag
   ============================================================
 
-  HOW TO USE:
-  1. Open Google Tag Manager (https://tagmanager.google.com)
-  2. Select container GTM-MPN4J78
-  3. Create a new Tag → Custom HTML
-  4. Copy everything below (including the <script> tags) and paste it
-     as the tag content
-  5. Set the trigger to fire on "All Pages" (or your desired trigger)
-  6. Save and Publish the container
+  A copy of the Custom HTML tag delivered via GTM container GTM-MPN4J78.
+  Changes to this file have no impact on either demo — it is for reference only.
+  To update the live tag, edit it in Google Tag Manager and re-publish.
 
-  WHAT THIS DOES:
-  - Loads the Rokt Web SDK via the mParticle ecommerce integration pattern
-  - Calls selectPlacements() with test attributes to render a Rokt placement
-  - Intercepts link clicks via overrideLinkNavigation / LINK_NAVIGATION_REQUEST
-  - Forwards clicked URLs to the native iOS app via webkit messageHandlers
-  - Falls back to window.open() when running outside a WKWebView (e.g. browser testing)
+  PLATFORM-SPECIFIC LINK HANDLING (LINK_NAVIGATION_REQUEST):
+  When a user taps a link inside a Rokt placement, the SDK fires a
+  LINK_NAVIGATION_REQUEST event (because overrideLinkNavigation is enabled).
+  This tag subscribes to that event and forwards the URL to the native layer:
 
-  CONFIGURATION:
-  - API Key: [redacted]
-  - Development Mode: ON (set isDevelopmentMode to false for production)
-  - overrideLinkNavigation: ON
+    iOS (WKWebView):
+      window.webkit.messageHandlers.roktMessageHandler.postMessage(url)
+      → Native Swift receives via WKScriptMessageHandler → opens in Safari
+
+    Android (WebView):
+      window.roktLinkOpener.openLink(url)
+      → Native Kotlin receives via @JavascriptInterface → opens in default browser
+
+    Browser fallback:
+      window.open(url)
+      → Opens in a new tab (for desktop/browser testing)
   ============================================================
 -->
 
@@ -105,7 +105,8 @@
         confirmationref: 'HSN-2024-00831',
         billingzipcode: '90210',
         amount: '43.49'
-      }
+      },
+      identifier: 'stg.rokt.conf',
     });
 
     // Handle the selection (may be a Promise or direct object)
@@ -120,11 +121,27 @@
             return;
           }
 
-          // Forward to native iOS app via WKWebView message handler
+          // ── Platform-specific URL forwarding ──
+          //
+          // iOS (WKWebView):
+          //   Native Swift registers a WKScriptMessageHandler named "roktMessageHandler".
+          //   JS sends the URL via: window.webkit.messageHandlers.roktMessageHandler.postMessage(url)
+          //
+          // Android (WebView):
+          //   Native Kotlin exposes a @JavascriptInterface object named "roktLinkOpener".
+          //   JS sends the URL via: window.roktLinkOpener.openLink(url)
+          //
+          // Browser fallback:
+          //   When running outside a native WebView (e.g. desktop testing), opens in a new tab.
+
           if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.roktMessageHandler) {
+            // iOS — forward to WKWebView message handler → opens in Safari
             window.webkit.messageHandlers.roktMessageHandler.postMessage(url);
+          } else if (window.roktLinkOpener && typeof window.roktLinkOpener.openLink === 'function') {
+            // Android — forward to @JavascriptInterface → opens in default browser
+            window.roktLinkOpener.openLink(url);
           } else {
-            // Fallback: open in a new tab/window (for browser testing)
+            // Fallback — open in a new tab/window (for browser testing)
             window.open(url);
           }
         });

@@ -14,7 +14,7 @@ Demo apps that load a Rokt placement inside a native WebView via Google Tag Mana
 | Platform | Directory      | README                      |
 | -------- | -------------- | --------------------------- |
 | iOS      | [`ios/`](ios/) | [iOS README](ios/README.md) |
-| Android  | `android/`     | Coming soon                 |
+| Android  | [`android/`](android/) | [Android README](android/README.md) |
 
 ## GTM Tag
 
@@ -45,5 +45,5 @@ hsn-webview-demo/
 ├── gtm-custom-code.html           # Rokt SDK code delivered via GTM Custom HTML tag
 ├── README.md                      # This file
 ├── ios/                           # iOS demo (see ios/README.md)
-└── android/                       # Android demo (coming soon)
+└── android/                       # Android demo (see android/README.md)
 ```
