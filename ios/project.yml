@@ -1,0 +1,23 @@
+name: RoktWebViewDemo
+options:
+  bundleIdPrefix: com.rokt
+  deploymentTarget:
+    iOS: "16.0"
+  xcodeVersion: "15.0"
+
+targets:
+  RoktWebViewDemo:
+    type: application
+    platform: iOS
+    sources:
+      - path: RoktWebViewDemo
+        excludes:
+          - Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.rokt.webviewdemo
+        INFOPLIST_FILE: RoktWebViewDemo/Info.plist
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        SWIFT_EMIT_LOC_STRINGS: YES
+        CODE_SIGN_STYLE: Automatic

@@ -1,0 +1,17 @@
+# Generated Xcode project (recreated via xcodegen)
+*.xcodeproj/
+xcuserdata/
+*.xcworkspace
+
+# Build artifacts
+DerivedData/
+build/
+
+# macOS
+.DS_Store
+
+# Claude Code
+.claude/
+
+# Internal
+spec.txt
