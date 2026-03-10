@@ -4,12 +4,9 @@ WKWebView app that loads the Rokt placement via GTM. Link clicks are intercepted
 
 ## Setup
 
-**Prerequisites:** macOS with Xcode 15+ and [Homebrew](https://brew.sh)
+**Prerequisites:** macOS with Xcode 15+
 
 ```bash
-brew install xcodegen        # one-time
-cd ios
-xcodegen generate            # creates RoktWebViewDemo.xcodeproj
 open RoktWebViewDemo.xcodeproj
 ```
 
