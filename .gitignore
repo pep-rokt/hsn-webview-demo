@@ -1,7 +1,5 @@
-# Generated Xcode project (recreated via xcodegen)
-*.xcodeproj/
+# Xcode user-specific data
 xcuserdata/
-*.xcworkspace
 
 # Build artifacts
 DerivedData/
