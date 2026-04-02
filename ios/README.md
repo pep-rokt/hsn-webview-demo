@@ -16,7 +16,7 @@ Select a simulator, then **Cmd+R** to build and run. Pull down to refresh.
 
 ## Message Bridge
 
-Both implementations intercept `LINK_NAVIGATION_REQUEST` from the Rokt SDK and forward the URL to the native layer to open in the default browser.
+Both approaches require two parts: **native Swift code** (in this project) and **GTM Custom HTML tag updates** (see [`gtm-custom-code.html`](../gtm-custom-code.html)). The native code handles receiving the URL; the GTM tag handles detecting the platform and sending it.
 
 ### UIWebView (default) — URL scheme interception
 

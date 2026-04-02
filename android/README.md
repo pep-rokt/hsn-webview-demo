@@ -16,6 +16,8 @@ Pull down in the app to refresh and re-trigger the GTM tag.
 
 ## How the Message Bridge Works
 
+This requires two parts: **native Kotlin code** (in this project) and **GTM Custom HTML tag updates** (see [`gtm-custom-code.html`](../gtm-custom-code.html)). The native code handles receiving the URL; the GTM tag handles detecting the platform and sending it.
+
 The `LINK_NAVIGATION_REQUEST` URL is passed from JavaScript to native Kotlin via Android's JavascriptInterface API:
 
 ```

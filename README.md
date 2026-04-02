@@ -2,6 +2,8 @@
 
 Demo apps that load a Rokt placement inside a native WebView via Google Tag Manager. Link clicks within the placement are intercepted and opened in the device's default browser.
 
+**Implementation requires changes in two places:** native app code (Swift/Kotlin) and the GTM Custom HTML tag. See [`gtm-custom-code.html`](gtm-custom-code.html) for the tag code.
+
 ## Quick Start
 
 1. Clone the repo:
