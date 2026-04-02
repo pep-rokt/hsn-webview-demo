@@ -4,7 +4,7 @@ WebView app that loads the Rokt placement via GTM. Link clicks are intercepted a
 
 ## Setup
 
-**Prerequisites:** Android Studio Hedgehog (2023.1.1) or later
+**Prerequisites:** Android Studio (2023.1.1) or later
 
 ```
 File → Open → select the android/ directory → wait for Gradle sync

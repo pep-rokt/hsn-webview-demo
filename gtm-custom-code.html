@@ -12,9 +12,14 @@
   LINK_NAVIGATION_REQUEST event (because overrideLinkNavigation is enabled).
   This tag subscribes to that event and forwards the URL to the native layer:
 
-    iOS (WKWebView):
+    iOS — WKWebView (recommended):
       window.webkit.messageHandlers.roktMessageHandler.postMessage(url)
       → Native Swift receives via WKScriptMessageHandler → opens in Safari
+
+    iOS — UIWebView (legacy, for apps with cookie-sync constraints):
+      window.location = 'rokt-link://' + encodeURIComponent(url)
+      → Native Swift intercepts via shouldStartLoadWith delegate → opens in Safari
+      → Requires native code to inject window.roktLegacyWebView = true on page load
 
     Android (WebView):
       window.roktLinkOpener.openLink(url)
@@ -121,27 +126,18 @@
             return;
           }
 
-          // ── Platform-specific URL forwarding ──
-          //
-          // iOS (WKWebView):
-          //   Native Swift registers a WKScriptMessageHandler named "roktMessageHandler".
-          //   JS sends the URL via: window.webkit.messageHandlers.roktMessageHandler.postMessage(url)
-          //
-          // Android (WebView):
-          //   Native Kotlin exposes a @JavascriptInterface object named "roktLinkOpener".
-          //   JS sends the URL via: window.roktLinkOpener.openLink(url)
-          //
-          // Browser fallback:
-          //   When running outside a native WebView (e.g. desktop testing), opens in a new tab.
-
+          // Forward URL to the native layer based on platform
           if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.roktMessageHandler) {
-            // iOS — forward to WKWebView message handler → opens in Safari
+            // iOS (WKWebView) — message handler
             window.webkit.messageHandlers.roktMessageHandler.postMessage(url);
           } else if (window.roktLinkOpener && typeof window.roktLinkOpener.openLink === 'function') {
-            // Android — forward to @JavascriptInterface → opens in default browser
+            // Android — @JavascriptInterface
             window.roktLinkOpener.openLink(url);
+          } else if (window.roktLegacyWebView) {
+            // iOS (UIWebView) — URL scheme interception
+            window.location = 'rokt-link://' + encodeURIComponent(url);
           } else {
-            // Fallback — open in a new tab/window (for browser testing)
+            // Browser fallback
             window.open(url);
           }
         });

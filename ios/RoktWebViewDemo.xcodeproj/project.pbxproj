@@ -10,6 +10,7 @@
 		42075C705E74F3FEDBB1DE96 /* confirmation.html in Resources */ = {isa = PBXBuildFile; fileRef = 98B03537A086EC164E34D05A /* confirmation.html */; };
 		4943FCAF25A5207D02CD0B2C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AC8D3A2B50B94A744EFD1E /* ContentView.swift */; };
 		4B97E2975046BA782E868860 /* RoktWebViewDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9103501E9C1DDBF4AF352CDB /* RoktWebViewDemoApp.swift */; };
+		60705B79B4962CB3353C9476 /* LegacyWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3D34E4F9DC3274810DA20B /* LegacyWebView.swift */; };
 		BFF544137347CC17846A6C31 /* ScriptMessageProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83F36E23FB960B24CB16966 /* ScriptMessageProxy.swift */; };
 		ED2519F3E32900A35A89111A /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2614E2D9D6C97A9A896A37 /* WebView.swift */; };
 /* End PBXBuildFile section */
@@ -18,6 +19,7 @@
 		5F2614E2D9D6C97A9A896A37 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		9103501E9C1DDBF4AF352CDB /* RoktWebViewDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoktWebViewDemoApp.swift; sourceTree = "<group>"; };
 		98B03537A086EC164E34D05A /* confirmation.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = confirmation.html; sourceTree = "<group>"; };
+		AA3D34E4F9DC3274810DA20B /* LegacyWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyWebView.swift; sourceTree = "<group>"; };
 		B8AC8D3A2B50B94A744EFD1E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D01B6E246E9D3F6E0E9257D6 /* RoktWebViewDemo.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = RoktWebViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D83F36E23FB960B24CB16966 /* ScriptMessageProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptMessageProxy.swift; sourceTree = "<group>"; };
@@ -45,6 +47,7 @@
 			children = (
 				98B03537A086EC164E34D05A /* confirmation.html */,
 				B8AC8D3A2B50B94A744EFD1E /* ContentView.swift */,
+				AA3D34E4F9DC3274810DA20B /* LegacyWebView.swift */,
 				9103501E9C1DDBF4AF352CDB /* RoktWebViewDemoApp.swift */,
 				D83F36E23FB960B24CB16966 /* ScriptMessageProxy.swift */,
 				5F2614E2D9D6C97A9A896A37 /* WebView.swift */,
@@ -123,6 +126,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4943FCAF25A5207D02CD0B2C /* ContentView.swift in Sources */,
+				60705B79B4962CB3353C9476 /* LegacyWebView.swift in Sources */,
 				4B97E2975046BA782E868860 /* RoktWebViewDemoApp.swift in Sources */,
 				BFF544137347CC17846A6C31 /* ScriptMessageProxy.swift in Sources */,
 				ED2519F3E32900A35A89111A /* WebView.swift in Sources */,

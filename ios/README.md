@@ -1,6 +1,8 @@
 # iOS Demo
 
-WKWebView app that loads the Rokt placement via GTM. Link clicks are intercepted and opened in Safari.
+WebView app that loads the Rokt placement via GTM. Link clicks are intercepted and opened in the device's default browser.
+
+**Default: UIWebView** (for apps with cookie-sync constraints). To switch to WKWebView, swap the view in `ContentView.swift`.
 
 ## Setup
 
@@ -10,47 +12,43 @@ WKWebView app that loads the Rokt placement via GTM. Link clicks are intercepted
 open RoktWebViewDemo.xcodeproj
 ```
 
-In Xcode: select a simulator (e.g. iPhone 16 Pro) from the top toolbar, then **Cmd+R** to build and run. If prompted for code signing, select your Apple ID under Signing & Capabilities (free accounts work for simulator).
+Select a simulator, then **Cmd+R** to build and run. Pull down to refresh.
 
-Pull down in the app to refresh and re-trigger the GTM tag.
+## Message Bridge
 
-## How the Message Bridge Works
+Both implementations intercept `LINK_NAVIGATION_REQUEST` from the Rokt SDK and forward the URL to the native layer to open in the default browser.
 
-The `LINK_NAVIGATION_REQUEST` URL is passed from JavaScript to native Swift via WKWebView's built-in message handler API:
+### UIWebView (default) — URL scheme interception
 
-```
-Rokt SDK (JS)                    WKWebView (Swift)               Safari
-─────────────                    ─────────────────               ──────
-1. User taps a link
-2. overrideLinkNavigation: true
-   prevents default navigation
-3. LINK_NAVIGATION_REQUEST
-   event fires with the URL
-4. JS handler calls:
-   window.webkit.messageHandlers
-     .roktMessageHandler          ──► 5. Coordinator receives
-     .postMessage(url)                   WKScriptMessage
-                                     6. Extracts URL string
-                                     7. UIApplication.shared
-                                        .open(url)              ──► 8. Opens in Safari
-```
+UIWebView has no JS-to-native message API, so links are forwarded via a custom `rokt-link://` URL scheme:
 
-- **JS side** (`gtm-custom-code.html`): Subscribes to `LINK_NAVIGATION_REQUEST` and forwards the URL to the native layer via `window.webkit.messageHandlers.roktMessageHandler.postMessage(url)`.
-- **Native side** (`WebView.swift`): A `WKScriptMessageHandler` registered under the name `roktMessageHandler` receives the message and opens the URL in Safari via `UIApplication.shared.open(url)`.
+1. Native injects `window.roktLegacyWebView = true` after page load
+2. GTM tag detects the flag and navigates to `rokt-link://<encoded-url>`
+3. `shouldStartLoadWith` intercepts the scheme, decodes the URL, opens it via `UIApplication.shared.open()`
 
-No third-party libraries are used — only Apple's native WebKit and UIKit frameworks.
+See `LegacyWebView.swift`.
+
+### WKWebView (alternative) — message handler
+
+WKWebView has a built-in `WKScriptMessageHandler` API:
+
+1. Native registers a handler named `roktMessageHandler`
+2. GTM tag calls `window.webkit.messageHandlers.roktMessageHandler.postMessage(url)`
+3. Coordinator receives the message and opens the URL via `UIApplication.shared.open()`
+
+See `WebView.swift` + `ScriptMessageProxy.swift`.
 
 ## Files
 
 | File | Purpose |
 |------|---------|
-| `project.yml` | XcodeGen spec — generates `.xcodeproj` |
-| `RoktWebViewDemo/WebView.swift` | WKWebView setup + native message handler |
-| `RoktWebViewDemo/confirmation.html` | Order confirmation page loaded in WebView (includes GTM) |
-| `RoktWebViewDemo/ScriptMessageProxy.swift` | Prevents WKScriptMessageHandler retain cycle |
-| `RoktWebViewDemo/ContentView.swift` | Main SwiftUI view |
+| `RoktWebViewDemo/LegacyWebView.swift` | UIWebView + URL scheme interception (default) |
+| `RoktWebViewDemo/WebView.swift` | WKWebView + message handler (alternative) |
+| `RoktWebViewDemo/ScriptMessageProxy.swift` | Prevents WKWebView retain cycle |
+| `RoktWebViewDemo/ContentView.swift` | Toggle between UIWebView / WKWebView |
+| `RoktWebViewDemo/confirmation.html` | Order confirmation page (loads GTM) |
 | `RoktWebViewDemo/RoktWebViewDemoApp.swift` | App entry point |
 
 ## Debugging
 
-Open Safari → **Settings → Advanced → Show features for web developers**. With the simulator running: **Develop → Simulator → confirmation.html**. Use the Console and Network tabs to verify GTM and Rokt SDK loaded.
+Open Safari → **Settings → Advanced → Show features for web developers**. With the simulator running: **Develop → Simulator → confirmation.html**.
